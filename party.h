@@ -12,6 +12,9 @@
 #ifndef _PARTY_H_
 #define _PARTY_H_
 
+char* AddVote();
+void FreeParties();
+void PrintResult();
 
 
 
