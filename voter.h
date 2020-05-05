@@ -12,7 +12,7 @@
 #ifndef _VOTER_H_
 #define _VOTER_H_
 
-void AddVoter(char* pName,char* pSurName);
+void AddVoter(char* pName,char* pSurName, int atoi(char* pID), char* pListParty);
 void FreeVoters();
 void PrintVoters();
 
