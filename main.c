@@ -50,7 +50,10 @@ int main()
 
             pListParty = AddVote(pParty);
 			if (pListParty)
-				AddVoter(pName, pSurName, atoi(pID), pListParty);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wint-conversion"
+				AddVoter(pName, pSurName, atoi(pID), pListParty); // NOLINT(cert-err34-c)
+#pragma clang diagnostic pop
             break;
 
         case 'P':
