@@ -8,7 +8,9 @@
 
 */
 
-
+/*
+ * Includes
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,6 +57,25 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
+    if(pName == NULL || pSurname == NULL || pParty == NULL){
+        return;
+    }
+    pVoter NewVoter = (pVoter)malloc(sizeof(Voter));
+    if (NULL == NewVoter){
+        return;
+    }
+    NewVoter->ID = ID;
+    NewVoter->pParty = pParty;
+    /* name allocating*/
+    NewVoter->pName = (char*)malloc(sizeof(char) * strlen(pName) + sizeof(char) * strlen(pSurname) + 1 + 1);
+    if (NULL == NewVoter->pName){
+        free(NewVoter);
+        return;
+    }
+    /* need to insert the name in capital letters*/
+
+
+
 }
 
 

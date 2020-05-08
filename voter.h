@@ -12,7 +12,10 @@
 #ifndef _VOTER_H_
 #define _VOTER_H_
 
-void AddVoter(char* pName,char* pSurName, int atoi(char* pID), char* pListParty);
+struct _Voter;
+typedef struct _Voter* pVoter;
+
+void AddVoter(char* pName,char* pSurName, int ID, char* pListParty);
 void FreeVoters();
 void PrintVoters();
 
