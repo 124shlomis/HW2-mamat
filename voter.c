@@ -58,23 +58,31 @@ static Voter* VoterList = NULL;
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
     if(pName == NULL || pSurname == NULL || pParty == NULL){
-        return;
+        exit(-1);
     }
+
     pVoter NewVoter = (pVoter)malloc(sizeof(Voter));
     if (NULL == NewVoter){
-        return;
+        exit(-1);
     }
+
     NewVoter->ID = ID;
     NewVoter->pParty = pParty;
     /* name allocating*/
     NewVoter->pName = (char*)malloc(sizeof(char) * strlen(pName) + sizeof(char) * strlen(pSurname) + 1 + 1);
     if (NULL == NewVoter->pName){
         free(NewVoter);
-        return;
+        exit(-1);
     }
-    /* need to insert the name in capital letters*/
 
+    /* Insert the name in capital letters */
+    InsertName(NewVoter, pName, pSurname);
 
+    /* Sorting by ID */
+
+    if (VoterList == NULL){
+        VoterList = NewVoter; /* Initialize Voter List */
+    }
 
 }
 
@@ -117,4 +125,37 @@ void PrintVoters()
         printf("%d %s %s\n", pVoter->ID, pVoter->pName, pVoter->pParty);
     }
     printf("\n");
+}
+
+ char* CapitalLetters(char* string){
+    char* STRING = (char*)malloc(sizeof(char) * strlen(string));
+
+    if (NULL == STRING){
+        free(STRING);
+        exit(-1);
+    }
+    for (int i=0 ; i<strlen(string); i++){
+        if (string[i] >= 'a' && string[i] <= 'z'){
+            STRING[i] = string[i] - 32;
+        }
+        else{
+            STRING[i] = string[i];
+        }
+    }
+    return STRING;
+}
+
+
+void InsertName(pVoter NewVoter, char* pName, char* pSurname){
+    strcpy(NewVoter->pName, CapitalLetters(pName));
+    strcat(NewVoter->pName, " ");
+    strcat(NewVoter->pName, CapitalLetters(pSurname));
+    strcat(NewVoter->pName, "\0");
+}
+
+    int main(){
+    AddVoter("SHLOMI","shitrit",4,"licud");
+    AddVoter("shay","shitrit",14,"yemina");
+    FreeVoters();
+    PrintVoters();
 }

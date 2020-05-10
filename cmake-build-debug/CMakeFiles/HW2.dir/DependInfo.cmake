@@ -4,8 +4,6 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/shlomishetrit/Documents/GitHub/HW2/main.c" "/Users/shlomishetrit/Documents/GitHub/HW2/cmake-build-debug/CMakeFiles/HW2.dir/main.c.o"
-  "/Users/shlomishetrit/Documents/GitHub/HW2/party.c" "/Users/shlomishetrit/Documents/GitHub/HW2/cmake-build-debug/CMakeFiles/HW2.dir/party.c.o"
   "/Users/shlomishetrit/Documents/GitHub/HW2/voter.c" "/Users/shlomishetrit/Documents/GitHub/HW2/cmake-build-debug/CMakeFiles/HW2.dir/voter.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
