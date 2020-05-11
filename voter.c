@@ -55,6 +55,61 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
+    Voter *p_nxtVoter = VoterList;
+    Voter *p_preVoter = VoterList;
+    while (p_preVoter != NULL && p_nxtVoter != NULL)
+    {
+        if (p_nxtVoter->ID < ID) {
+            p_preVoter = p_nxtVoter;
+            p_nxtVoter = p_nxtVoter->pNext;
+        }
+        else
+            break;
+    }
+    
+    // creates the new voter
+    Voter *p_newVoter = (Voter *)malloc(sizeof(Voter));
+    if (!p_newVoter) {
+        FreeVoters();
+        exit(-1);
+    }
+
+    p_newVoter->ID = ID;
+    p_newVoter->pParty = strdup(pParty);
+    if (p_preVoter == NULL) {
+        p_newVoter->pNext = NULL;
+        VoterList = p_newVoter;
+    }
+    else if (p_preVoter == p_nxtVoter) {
+        p_newVoter->pNext = VoterList;
+        VoterList = p_newVoter;
+    } 
+    else {
+        p_newVoter->pNext = p_nxtVoter;
+        p_preVoter->pNext = p_newVoter;
+    }
+        
+
+  
+    // creates the voters full name from his name and surmane
+    char* newName = (char *)malloc(sizeof(char) * (strlen(pName)+strlen(pSurname)+2));
+    if (!newName) {
+        FreeVoters();
+        exit(-1);
+    }
+    strcpy(newName, pName);
+    strcat(newName, " ");
+    strcat(newName, pSurname);
+    p_newVoter->pName = newName;
+    
+    // converts the Voter's name to uppercase letters only
+    char* p_tmp = newName;
+    while (*p_tmp) {
+        *p_tmp = toupper(*p_tmp);
+        p_tmp++;
+    }
+
+    return;
 }
 
 
@@ -69,6 +124,12 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 */
 void FreeVoters()
 {
+    while (VoterList) {
+        Voter* tmp = VoterList;
+        VoterList = VoterList->pNext;
+        free(tmp->pName);
+        free(tmp);
+    }
 }
 
 
