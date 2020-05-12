@@ -123,60 +123,6 @@ HW2/fast:
 	$(MAKE) -f CMakeFiles/HW2.dir/build.make CMakeFiles/HW2.dir/build
 .PHONY : HW2/fast
 
-main.o: main.c.o
-
-.PHONY : main.o
-
-# target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/HW2.dir/build.make CMakeFiles/HW2.dir/main.c.o
-.PHONY : main.c.o
-
-main.i: main.c.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/HW2.dir/build.make CMakeFiles/HW2.dir/main.c.i
-.PHONY : main.c.i
-
-main.s: main.c.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/HW2.dir/build.make CMakeFiles/HW2.dir/main.c.s
-.PHONY : main.c.s
-
-party.o: party.c.o
-
-.PHONY : party.o
-
-# target to build an object file
-party.c.o:
-	$(MAKE) -f CMakeFiles/HW2.dir/build.make CMakeFiles/HW2.dir/party.c.o
-.PHONY : party.c.o
-
-party.i: party.c.i
-
-.PHONY : party.i
-
-# target to preprocess a source file
-party.c.i:
-	$(MAKE) -f CMakeFiles/HW2.dir/build.make CMakeFiles/HW2.dir/party.c.i
-.PHONY : party.c.i
-
-party.s: party.c.s
-
-.PHONY : party.s
-
-# target to generate assembly for a file
-party.c.s:
-	$(MAKE) -f CMakeFiles/HW2.dir/build.make CMakeFiles/HW2.dir/party.c.s
-.PHONY : party.c.s
-
 voter.o: voter.c.o
 
 .PHONY : voter.o
@@ -213,12 +159,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... HW2"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
-	@echo "... party.o"
-	@echo "... party.i"
-	@echo "... party.s"
 	@echo "... voter.o"
 	@echo "... voter.i"
 	@echo "... voter.s"

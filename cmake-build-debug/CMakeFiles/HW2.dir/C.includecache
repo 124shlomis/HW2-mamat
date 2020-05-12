@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/shlomishetrit/Documents/GitHub/HW2/voter.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+ctype.h
+-
+voter.h
+/Users/shlomishetrit/Documents/GitHub/HW2/voter.h
+
+/Users/shlomishetrit/Documents/GitHub/HW2/voter.h
+

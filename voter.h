@@ -12,10 +12,15 @@
 #ifndef _VOTER_H_
 #define _VOTER_H_
 
-void AddVoter(char* pName, char* pSurname, int ID, char* pParty);
+struct _Voter;
+typedef struct _Voter* pVoter;
 
+void AddVoter(char* pName,char* pSurName, int ID, char* pListParty);
 void FreeVoters();
-
 void PrintVoters();
+void InsertName(pVoter NewVoter, char* pName, char* pSurname); /* insert Full Name in Capital Letters */
+char* CapitalLetters(char* string); /* Convert string of letters to all Capital */
+
+
 
 #endif /* _VOTER_H_ */

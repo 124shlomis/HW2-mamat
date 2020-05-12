@@ -59,37 +59,6 @@ static Party* PartyList = NULL;
 */
 char* AddVote(char* pPartyName)
 {
-    char* pFirst_letter = strchr(pPartyName, '-');
-    while (pFirst_letter++) {
-        if (*pFirst_letter < 'A' || *pFirst_letter > 'Z') {
-            PrintError(pPartyName);
-            return NULL;
-        }
-        pFirst_letter = strchr(pFirst_letter, '-');
-    } 
-   
-    
-    Party* i = PartyList;
-    while (i && strcmp(pPartyName, i->Party)) {
-        i = i->pNext;
-    }
-
-    if (i != NULL) {
-        i->NumVoters++;
-        return i->Party;
-    }
-    
-    
-    Party* newParty = (Party*)malloc(sizeof(Party));
-    if (newParty == NULL) {
-        FreeParties();
-        exit(-1);
-    }
-   
-    newParty->NumVoters = 1;
-    newParty->pNext = PartyList;
-    PartyList = newParty;
-    return  strcpy(newParty->Party, pPartyName);
 }
 
 
@@ -104,11 +73,6 @@ char* AddVote(char* pPartyName)
 */
 void FreeParties()
 {
-    while (PartyList) {
-        Party* tmp = PartyList;
-        PartyList = PartyList->pNext;
-        free(tmp);
-    }
 }
 
 

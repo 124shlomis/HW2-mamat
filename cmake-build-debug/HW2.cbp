@@ -80,15 +80,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/shlomishetrit/Documents/GitHub/HW2/main.c">
-			<Option target="HW2"/>
-		</Unit>
-		<Unit filename="/Users/shlomishetrit/Documents/GitHub/HW2/party.c">
-			<Option target="HW2"/>
-		</Unit>
-		<Unit filename="/Users/shlomishetrit/Documents/GitHub/HW2/party.h">
-			<Option target="HW2"/>
-		</Unit>
 		<Unit filename="/Users/shlomishetrit/Documents/GitHub/HW2/voter.c">
 			<Option target="HW2"/>
 		</Unit>
