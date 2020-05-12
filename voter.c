@@ -8,9 +8,7 @@
 
 */
 
-/*
- * Includes
- */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,33 +55,61 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
-    if(pName == NULL || pSurname == NULL || pParty == NULL){
+    Voter *p_nxtVoter = VoterList;
+    Voter *p_preVoter = VoterList;
+    while (p_preVoter != NULL && p_nxtVoter != NULL)
+    {
+        if (p_nxtVoter->ID < ID) {
+            p_preVoter = p_nxtVoter;
+            p_nxtVoter = p_nxtVoter->pNext;
+        }
+        else
+            break;
+    }
+    
+    // creates the new voter
+    Voter *p_newVoter = (Voter *)malloc(sizeof(Voter));
+    if (!p_newVoter) {
+        FreeVoters();
         exit(-1);
     }
 
-    pVoter NewVoter = (pVoter)malloc(sizeof(Voter));
-    if (NULL == NewVoter){
+    p_newVoter->ID = ID;
+    p_newVoter->pParty = strdup(pParty);
+    if (p_preVoter == NULL) {
+        p_newVoter->pNext = NULL;
+        VoterList = p_newVoter;
+    }
+    else if (p_preVoter == p_nxtVoter) {
+        p_newVoter->pNext = VoterList;
+        VoterList = p_newVoter;
+    } 
+    else {
+        p_newVoter->pNext = p_nxtVoter;
+        p_preVoter->pNext = p_newVoter;
+    }
+        
+
+  
+    // creates the voters full name from his name and surmane
+    char* newName = (char *)malloc(sizeof(char) * (strlen(pName)+strlen(pSurname)+2));
+    if (!newName) {
+        FreeVoters();
         exit(-1);
     }
-
-    NewVoter->ID = ID;
-    NewVoter->pParty = pParty;
-    /* name allocating*/
-    NewVoter->pName = (char*)malloc(sizeof(char) * strlen(pName) + sizeof(char) * strlen(pSurname) + 1 + 1);
-    if (NULL == NewVoter->pName){
-        free(NewVoter);
-        exit(-1);
+    strcpy(newName, pName);
+    strcat(newName, " ");
+    strcat(newName, pSurname);
+    p_newVoter->pName = newName;
+    
+    // converts the Voter's name to uppercase letters only
+    char* p_tmp = newName;
+    while (*p_tmp) {
+        *p_tmp = toupper(*p_tmp);
+        p_tmp++;
     }
 
-    /* Insert the name in capital letters */
-    InsertName(NewVoter, pName, pSurname);
-
-    /* Sorting by ID */
-
-    if (VoterList == NULL){
-        VoterList = NewVoter; /* Initialize Voter List */
-    }
-
+    return;
 }
 
 
@@ -98,6 +124,12 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 */
 void FreeVoters()
 {
+    while (VoterList) {
+        Voter* tmp = VoterList;
+        VoterList = VoterList->pNext;
+        free(tmp->pName);
+        free(tmp);
+    }
 }
 
 
@@ -125,37 +157,4 @@ void PrintVoters()
         printf("%d %s %s\n", pVoter->ID, pVoter->pName, pVoter->pParty);
     }
     printf("\n");
-}
-
- char* CapitalLetters(char* string){
-    char* STRING = (char*)malloc(sizeof(char) * strlen(string));
-
-    if (NULL == STRING){
-        free(STRING);
-        exit(-1);
-    }
-    for (int i=0 ; i<strlen(string); i++){
-        if (string[i] >= 'a' && string[i] <= 'z'){
-            STRING[i] = string[i] - 32;
-        }
-        else{
-            STRING[i] = string[i];
-        }
-    }
-    return STRING;
-}
-
-
-void InsertName(pVoter NewVoter, char* pName, char* pSurname){
-    strcpy(NewVoter->pName, CapitalLetters(pName));
-    strcat(NewVoter->pName, " ");
-    strcat(NewVoter->pName, CapitalLetters(pSurname));
-    strcat(NewVoter->pName, "\0");
-}
-
-    int main(){
-    AddVoter("SHLOMI","shitrit",4,"licud");
-    AddVoter("shay","shitrit",14,"yemina");
-    FreeVoters();
-    PrintVoters();
 }
