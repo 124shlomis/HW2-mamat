@@ -59,16 +59,7 @@ static Party* PartyList = NULL;
 */
 char* AddVote(char* pPartyName)
 {
-    char* pFirst_letter = strchr(pPartyName, '-');
-    while (pFirst_letter++) {
-        if (*pFirst_letter < 'A' || *pFirst_letter > 'Z') {
-            PrintError(pPartyName);
-            return NULL;
-        }
-        pFirst_letter = strchr(pFirst_letter, '-');
-    } 
-   
-    
+    // checks if party name already exists, if it does, apdates NumVoters and returns
     Party* i = PartyList;
     while (i && strcmp(pPartyName, i->Party)) {
         i = i->pNext;
@@ -78,8 +69,18 @@ char* AddVote(char* pPartyName)
         i->NumVoters++;
         return i->Party;
     }
+
+    // verifies the legality of the new party name
+    char* pFirst_letter = strchr(pPartyName, '-');
+    while (pFirst_letter++) {
+        if (*pFirst_letter < 'A' || *pFirst_letter > 'Z') {
+            PrintError(pPartyName);
+            return NULL;
+        }
+        pFirst_letter = strchr(pFirst_letter, '-');
+    } 
     
-    
+    // creates rhe new party
     Party* newParty = (Party*)malloc(sizeof(Party));
     if (newParty == NULL) {
         FreeParties();
