@@ -6,8 +6,5 @@ set(CMAKE_C_STANDARD 11)
 include_directories(.)
 
 add_executable(HW2
-        main.c
-        party.c
-        party.h
         voter.c
         voter.h)

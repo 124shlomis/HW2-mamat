@@ -55,6 +55,7 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
+
     // loops through voters to find the last voter with ID lower than the new voter's ID
     Voter *p_nxtVoter = VoterList;
     Voter *p_preVoter = VoterList;
@@ -80,6 +81,7 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
     }
     p_newVoter->ID = ID;
     p_newVoter->pParty = party_name;
+
     strcpy(newName, pName);
     strcat(newName, " ");
     strcat(newName, pSurname);

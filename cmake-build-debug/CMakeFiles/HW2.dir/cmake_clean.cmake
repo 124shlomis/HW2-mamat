@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/HW2.dir/main.c.o"
-  "CMakeFiles/HW2.dir/party.c.o"
   "CMakeFiles/HW2.dir/voter.c.o"
   "HW2"
   "HW2.pdb"
