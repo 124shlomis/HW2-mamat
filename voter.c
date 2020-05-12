@@ -55,6 +55,8 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
+
+    // loops through voters to find the last voter with ID lower than the new voter's ID
     Voter *p_nxtVoter = VoterList;
     Voter *p_preVoter = VoterList;
     while (p_preVoter != NULL && p_nxtVoter != NULL)
@@ -69,13 +71,30 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
     
     // creates the new voter
     Voter *p_newVoter = (Voter *)malloc(sizeof(Voter));
-    if (!p_newVoter) {
+   
+    // creates the voters full name from his name and surmane
+    char* newName = (char*)malloc(sizeof(char) * (strlen(pName) + strlen(pSurname) + 2));
+    char* party_name = strdup(pParty);
+    if (!p_newVoter || !newName || !party_name) {
         FreeVoters();
         exit(-1);
     }
-
     p_newVoter->ID = ID;
-    p_newVoter->pParty = strdup(pParty);
+    p_newVoter->pParty = party_name;
+
+    strcpy(newName, pName);
+    strcat(newName, " ");
+    strcat(newName, pSurname);
+    p_newVoter->pName = newName;
+
+    // converts the Voter's name to uppercase letters only
+    char* p_tmp = newName;
+    while (*p_tmp) {
+        *p_tmp = toupper(*p_tmp);
+        p_tmp++;
+    }
+
+    // rearranges the voters list according the new ID
     if (p_preVoter == NULL) {
         p_newVoter->pNext = NULL;
         VoterList = p_newVoter;
@@ -87,26 +106,6 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
     else {
         p_newVoter->pNext = p_nxtVoter;
         p_preVoter->pNext = p_newVoter;
-    }
-        
-
-  
-    // creates the voters full name from his name and surmane
-    char* newName = (char *)malloc(sizeof(char) * (strlen(pName)+strlen(pSurname)+2));
-    if (!newName) {
-        FreeVoters();
-        exit(-1);
-    }
-    strcpy(newName, pName);
-    strcat(newName, " ");
-    strcat(newName, pSurname);
-    p_newVoter->pName = newName;
-    
-    // converts the Voter's name to uppercase letters only
-    char* p_tmp = newName;
-    while (*p_tmp) {
-        *p_tmp = toupper(*p_tmp);
-        p_tmp++;
     }
 
     return;
@@ -128,6 +127,7 @@ void FreeVoters()
         Voter* tmp = VoterList;
         VoterList = VoterList->pNext;
         free(tmp->pName);
+        free(tmp->pParty);
         free(tmp);
     }
 }

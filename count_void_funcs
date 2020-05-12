@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# first parameter: name of directory
+
+# this script checks how many functions that return void
+# are declared and implemented in the input directory and sub-directories
+
+
+if [[ $# != 1 || ! -d "$1" ]]; then									# varifies that there is only one input parameter
+	echo error!														# and that it's a directory
+	exit 1
+fi
+sum=0
+for file in "$1"/*; do												# loops through every file and sub-directory in directory
+	if [[ -f "$file" ]]; then										# checks if "$file" is a file or directory
+		num=`grep 'void' "$file" | grep '(' | grep ')' | wc -l`		# counts how many lines with 'void' then '(' then ')'
+		(( sum = $sum + $num ))
+	elif [[ -d "$file" ]]; then
+		sub=`$0 "$file"` 											# recursive call
+		(( sum = $sum + $sub + 0 )) 								# in case $sub is blank
+	else
+		echo $file not included in the total >&2
+	fi
+done
+echo $sum
+exit 0
