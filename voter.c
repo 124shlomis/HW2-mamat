@@ -8,15 +8,12 @@
 
 */
 
-/*
- * Includes
- */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "voter.h"
-
 
 /*
  * Types
@@ -30,11 +27,15 @@ typedef struct _Voter
     struct _Voter* pNext;
 } Voter;
 
+typedef Voter* pVoter;
 
 /*
  * Statics
  */
-static Voter* VoterList = NULL;
+static pVoter VoterList = NULL;
+static void InsertName(pVoter NewVoter, char* pName, char* pSurname);
+static void SortByID(pVoter NewVoter);
+
 
 
 /*
@@ -55,40 +56,83 @@ static Voter* VoterList = NULL;
   Returns: --
 
 */
+
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
-    if(pName == NULL || pSurname == NULL || pParty == NULL){
+    if (pName == NULL || pSurname == NULL || pParty == NULL){ /* Check for legal input */
+        /* freeVoters and parties */
+        FreeVoters();
         exit(-1);
     }
-
+    /* Allocating memory for NewVoter and his pName */
     pVoter NewVoter = (pVoter)malloc(sizeof(Voter));
-    if (NULL == NewVoter){
+    if (NewVoter == NULL){
+        /* freeVoters and parties */
+        FreeVoters();
         exit(-1);
     }
-
+    NewVoter->pName = (char*)malloc(strlen(pName)+strlen(pSurname)+2);
+    if (NewVoter->pName == NULL){
+        free(NewVoter);
+        FreeVoters();
+        exit(-1);
+    }
+    /* Insert ID, Party and Name */
     NewVoter->ID = ID;
     NewVoter->pParty = pParty;
-    /* name allocating*/
-    NewVoter->pName = (char*)malloc(sizeof(char) * strlen(pName) + sizeof(char) * strlen(pSurname) + 1 + 1);
-    if (NULL == NewVoter->pName){
-        free(NewVoter);
-        exit(-1);
-    }
-
-    /* Insert the name in capital letters */
     InsertName(NewVoter, pName, pSurname);
 
-    /* Sorting by ID */
-
-    if (VoterList == NULL){
+    /* Sorting */
+    if(VoterList == NULL){ /* The first Voter case */
         VoterList = NewVoter;
+        VoterList->pNext = NULL;
+    } else{
+        SortByID(NewVoter);
     }
-    pVoter AuxVoter = VoterList;
-    pVoter NextAuxVoter = AuxVoter->pNext;
-
 }
 
+/*
 
+  Function: SortByID
+
+  Abstract:
+
+    Sorting the VoterList by ID's. Sub-Function of AddVoter.
+
+  Parameters:
+
+    NewVoter - A new Voter to be inserted in the right place in VoterList.
+
+
+  Returns: --
+
+*/
+
+void SortByID(pVoter NewVoter){
+    pVoter AuxVoter = VoterList; /* Iterator on VoterList */
+    pVoter PrevAuxVoter = VoterList; /* Previous Voter iterator  */
+    if ( NewVoter->ID <= AuxVoter->ID){ /* Case the NewVoter is First */
+        VoterList = NewVoter;
+        NewVoter->pNext = AuxVoter;
+        while (AuxVoter != NULL){
+            AuxVoter = AuxVoter->pNext;
+        }
+        return;
+    } else {
+        AuxVoter = AuxVoter->pNext;
+    }
+    while( (AuxVoter != NULL) && (NewVoter->ID > AuxVoter->ID) ){
+        AuxVoter = AuxVoter->pNext;
+        PrevAuxVoter = PrevAuxVoter->pNext;
+    }
+    if (AuxVoter == NULL){ /* Case the NewVoter is Last */
+        PrevAuxVoter->pNext = NewVoter;
+        NewVoter->pNext = NULL;
+    }
+    else if (NewVoter->ID <= AuxVoter->ID){ /* Mean case  */
+        PrevAuxVoter->pNext = NewVoter;
+        NewVoter->pNext = AuxVoter;
+    }
 }
 
 /*
@@ -102,6 +146,13 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 */
 void FreeVoters()
 {
+    pVoter AuxVoter = VoterList; /* Iterator */
+    while (AuxVoter != NULL){
+        VoterList = VoterList->pNext;
+        free(AuxVoter->pName);
+        free(AuxVoter);
+        AuxVoter = VoterList;
+    }
 }
 
 
@@ -116,7 +167,7 @@ void FreeVoters()
 */
 void PrintVoters()
 {
-    Voter* pVoter;
+    pVoter pVoter;
 
     printf("Registered Voters\n");
     printf("ID | Name | Vote\n");
@@ -131,37 +182,56 @@ void PrintVoters()
     printf("\n");
 }
 
- char* CapitalLetters(char* string){
-    char* STRING = (char*)malloc(sizeof(char) * strlen(string));
 
-    if (NULL == STRING){
-        free(STRING);
-        exit(-1);
-    }
-    for (int i=0 ; i<strlen(string); i++){
-        if (string[i] >= 'a' && string[i] <= 'z'){
-            STRING[i] = string[i] - 32;
-        }
-        else{
-            STRING[i] = string[i];
-        }
-    }
-    return STRING;
-}
+/*
+
+  Function: InsertName
+
+  Abstract:
+
+    Insert the full name of the NewVoter in capital letters. assuming that name is legal.
+
+  Parameters:
+
+    NewVoter - A new voter that need to insert his name in capital letters in the right place.
+    *pName - His private name.
+    *pSurname - His surname.
+
+  Returns: --
+
+*/
 
 
-void InsertName(pVoter NewVoter, char* pName, char* pSurname){
-    strcpy(NewVoter->pName, CapitalLetters(pName));
+
+
+void InsertName(pVoter NewVoter, char *pName, char *pSurname) {
+    strcpy(NewVoter->pName, "\0");
+    strcat(NewVoter->pName, pName);
     strcat(NewVoter->pName, " ");
-    strcat(NewVoter->pName, CapitalLetters(pSurname));
-    strcat(NewVoter->pName, "\0");
+    strcat(NewVoter->pName, pSurname);
+
+    char *pChar = NewVoter->pName; /* Iterator */
+    while (*pChar) {
+        *pChar = toupper(( unsigned char ) *pChar);
+        pChar++;
+    }
 }
 
 
 
-    int main(){
-    AddVoter("SHLOMI","shitrit",4,"licud");
-    AddVoter("shay","jhg",14,"yemina");
+/* remember to remove main*/
+int main(){
+   AddVoter("salomi", "h", 234, "SFD");
+   PrintVoters();
     FreeVoters();
     PrintVoters();
+    AddVoter("hellO", "World", 0, "like");
+    PrintVoters();
+   AddVoter("she","is",123,"likud");
+    AddVoter("d","f",1234,"dog");
+    AddVoter("cd","y",14,"o");
+    AddVoter("h","^Zig",12342345,"dog");
+    PrintVoters();
+    FreeVoters();
+    return 0;
 }
