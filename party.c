@@ -188,7 +188,7 @@ int IsLegalParty(char* pPartyName) {
             break;
         }
         pChar++;
-        if ( ( (*pChar > 96) && (*pChar < 123) ) || ( *pChar == 0 ) ) {
+        if ( !( (*pChar > 64) && (*pChar < 91) ) || ( *pChar == 0 ) ) {
             return false;
         }
         result = pChar;
