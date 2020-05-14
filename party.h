@@ -13,7 +13,9 @@
 #define _PARTY_H_
 
 char* AddVote(char* pParty);
+
 void FreeParties();
+
 void PrintResult();
 
 

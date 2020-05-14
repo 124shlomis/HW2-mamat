@@ -14,6 +14,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "voter.h"
+#include "party.h"
 
 /*
  * Types
@@ -60,20 +61,23 @@ static void SortByID(pVoter NewVoter);
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
     if (pName == NULL || pSurname == NULL || pParty == NULL){ /* Check for legal input */
-        /* freeVoters and parties */
+        /* free voters and parties before exit the program */
+        FreeParties();
         FreeVoters();
         exit(-1);
     }
     /* Allocating memory for NewVoter and his pName */
     pVoter NewVoter = (pVoter)malloc(sizeof(Voter));
     if (NewVoter == NULL){
-        /* freeVoters and parties */
+        /* free voters and parties before exit the program */
+        FreeParties();
         FreeVoters();
         exit(-1);
     }
     NewVoter->pName = (char*)malloc(strlen(pName)+strlen(pSurname)+2);
     if (NewVoter->pName == NULL){
         free(NewVoter);
+        FreeParties();
         FreeVoters();
         exit(-1);
     }
@@ -201,9 +205,6 @@ void PrintVoters()
 
 */
 
-
-
-
 void InsertName(pVoter NewVoter, char *pName, char *pSurname) {
     strcpy(NewVoter->pName, "\0");
     strcat(NewVoter->pName, pName);
@@ -219,19 +220,3 @@ void InsertName(pVoter NewVoter, char *pName, char *pSurname) {
 
 
 
-/* remember to remove main*/
-int main(){
-   AddVoter("salomi", "h", 234, "SFD");
-   PrintVoters();
-    FreeVoters();
-    PrintVoters();
-    AddVoter("hellO", "World", 0, "like");
-    PrintVoters();
-   AddVoter("she","is",123,"likud");
-    AddVoter("d","f",1234,"dog");
-    AddVoter("cd","y",14,"o");
-    AddVoter("h","^Zig",12342345,"dog");
-    PrintVoters();
-    FreeVoters();
-    return 0;
-}
